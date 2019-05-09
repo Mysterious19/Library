@@ -1,29 +1,30 @@
 
-
-public class Book{
+public class Book {
     private int bookId;
     private String name;
     private int available;
     private int quantity;
 
-    Book(int id, String name, int quantity){
+    Book(int id, String name, int quantity) {
         this.bookId = id;
         this.name = name;
         this.quantity = quantity;
         this.available = quantity;
     }
 
-    public int getId(){
+    public int getId() {
         return bookId;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
-    public int getQuantity(){
+
+    public int getQuantity() {
         return quantity;
     }
-    public int getAvailable(){
+
+    public int getAvailable() {
         return available;
     }
 

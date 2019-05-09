@@ -128,7 +128,7 @@ class Database {
     public void insert(int bookId, int userId) {
         try {
 
-            //check for availability of the book
+            // check for availability of the book
             sql = "SELECT AVAIL FROM BOOKS WHERE BOOKID = ?";
             int newQuantity = -1;
             ps = conn.prepareStatement(sql);
@@ -143,7 +143,7 @@ class Database {
             // System.out.println(newQuantity);
             ps.close();
 
-            //if available - add to issue table and update availability in book table
+            // if available - add to issue table and update availability in book table
             if (newQuantity >= 0) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate date = LocalDate.now();
@@ -191,10 +191,10 @@ class Database {
         }
     }
 
-    //remove book by the admin
+    // remove book by the admin
     public void removeBook(int id) {
         try {
-            //if available and not issued by any user
+            // if available and not issued by any user
             int newQuantity = 0;
             sql = "SELECT QUANTITY, AVAIL FROM BOOKS WHERE BOOKID = ?";
 
@@ -214,7 +214,6 @@ class Database {
             }
             ps.close();
 
-            
             if (newQuantity == 0) {
                 sql = "DELETE FROM BOOKS " + "WHERE BOOKID = ?";
 
@@ -238,7 +237,7 @@ class Database {
         }
     }
 
-    //returning book 
+    // returning book
     public void removeReturn(int bookId, int userId) {
         try {
 
@@ -253,7 +252,7 @@ class Database {
             System.out.println(newAvail);
             ps.close();
 
-            //remove from issue table
+            // remove from issue table
             sql = "DELETE FROM ISSUE " + "WHERE USERID = ? and BOOKID = ?";
 
             ps = conn.prepareStatement(sql);
@@ -262,7 +261,7 @@ class Database {
             ps.executeUpdate();
             ps.close();
 
-            //update last issued and avail
+            // update last issued and avail
             LocalDate updateDate = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             sql = "UPDATE BOOKS SET LASTISSUED = ?, AVAIL = ? WHERE BOOKID = ?";
@@ -278,7 +277,7 @@ class Database {
         }
     }
 
-    //search similar prefix-books
+    // search similar prefix-books
     public void searchSimilar(String bookName) {
 
         try {
@@ -289,19 +288,19 @@ class Database {
             rs = ps.executeQuery();
             String tag = "NOT AVAIL";
             String nowAvail = "";
-            //display availability of the books
+            // display availability of the books
             while (rs.next()) {
                 if (rs.getInt("AVAIL") > 0) {
                     tag = "AVAIL";
                 } else {
                     tag = "NOT AVAIL";
-                    //if not available - display by when will it be available
+                    // if not available - display by when will it be available
                     try {
                         String sql1 = "SELECT DUEDATE FROM ISSUE WHERE BOOKID IN (SELECT BOOKID FROM BOOKS WHERE NAME = ?)";
                         PreparedStatement ps1 = conn.prepareStatement(sql1);
                         ps1.setString(1, rs.getString("NAME"));
                         ResultSet rs1 = ps1.executeQuery();
-                         nowAvail = rs1.getString("DUEDATE");
+                        nowAvail = rs1.getString("DUEDATE");
                         while (rs1.next()) {
                             if (nowAvail.compareTo(rs1.getString("DUEDATE")) > 0)
                                 nowAvail = rs1.getString("DUEDATE");
@@ -313,8 +312,8 @@ class Database {
                     }
                 }
 
-                System.out.println(rs.getString("NAME") + " " + tag+ " "+nowAvail);
-              
+                System.out.println(rs.getString("NAME") + " " + tag + " " + nowAvail);
+
             }
             ps.close();
 
@@ -324,11 +323,10 @@ class Database {
 
     }
 
-    //query for unused books over a period of time
+    // query for unused books over a period of time
     public ArrayList<String> searchUnused(int days) {
 
         LocalDate date = (LocalDate.now()).minusDays(days);
-        System.out.println(date);
 
         ArrayList<String> bookNames = new ArrayList<>();
         try {
@@ -341,7 +339,7 @@ class Database {
             while (rs.next()) {
                 String prevString = rs.getString("LASTISSUED");
                 LocalDate prev = LocalDate.parse(prevString);
-                // System.out.println(prev);
+
                 if (prev.isBefore(date) == true) {
                     bookNames.add(rs.getString("NAME"));
                 }

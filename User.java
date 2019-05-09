@@ -1,17 +1,17 @@
-class User{
+class User {
     private int UserId;
     private String name;
 
-    User(int id, String name){
+    User(int id, String name) {
         this.UserId = id;
         this.name = name;
     }
 
-    public int getId(){
+    public int getId() {
         return UserId;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 }
