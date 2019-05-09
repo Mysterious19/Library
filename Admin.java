@@ -1,3 +1,6 @@
+import java.sql.*;
+import java.util.ArrayList; 
+
 class Admin{
     private Database db = null;
 
@@ -22,4 +25,26 @@ class Admin{
     public void removeBook(int id){
         db.removeBook(id);
     }
+
+    public void issue(int bookId, int userId){
+        db.insert(bookId,userId);
+    }
+    
+    public void returnBook(int bookId, int userId){
+        db.remove(bookId,userId);
+    }
+
+    public void search(String bookName){
+
+        ArrayList<String> bookNames = db.search(bookName);
+        for (String obj:bookNames)
+            System.out.println(obj);
+    }
+
+    public void checkUnusedBooks(int days){
+        ArrayList<String> bookNames = db.search(days);
+        for (String obj:bookNames)
+            System.out.println(obj);
+    }
+
 }

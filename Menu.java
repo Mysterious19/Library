@@ -7,16 +7,16 @@ class Menu{
         this.clerk = clerk;
     }
 
-    public void selectTask(){
+    public int selectTask(){
         System.out.println("1. Add New User"+
                            "2. Delete a User"+
                            "3. Add New Book"+
                            "4. Remove Book"+
                            "5. Issue Book"+
                            "6. Return Book"+
-                           "7. Dues Information"+
-                           "8. Search a book"+
-                           "9. Unused books");
+                           "7. Search a book"+
+                           "8. Unused books"+
+                           "9. Exit");
     
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
@@ -55,6 +55,45 @@ class Menu{
                 clerk.removeBook(id);
                 break;
             }
+            case 5 : {
+                System.out.println("Enter User id : ");
+                int bookId = scanner.nextInt();
+                System.out.println("Enter Book id : ");
+                int userId = scanner.nextInt();
+            
+                clerk.issue(bookId,userId);
+                break;
+            }
+
+            case 6 : {
+                System.out.println("Enter User id : ");
+                int bookId = scanner.nextInt();
+                System.out.println("Enter Book id : ");
+                int userId = scanner.nextInt();
+            
+                clerk.returnBook(bookId,userId);
+                break;
+            }
+            case 7 : {
+                System.out.println("Type the name of the book (with suggestions)");
+                String name = scanner.next();
+
+                clerk.search(name);
+                break;
+            }
+            case 8:{
+                System.out.println("Specify days of unuse :");
+                int days = scanner.nextInt();
+                clerk.checkUnusedBooks(days);
+                break;
+            }
+            case 9 : {
+                return 0;
+            }
+            default : 
+                return 1;                
+
         }
+        return 1;
     }
 }
