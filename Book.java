@@ -3,10 +3,14 @@
 public class Book{
     private int bookId;
     private String name;
-    
-    Book(int id, String name){
+    private int available;
+    private int quantity;
+
+    Book(int id, String name, int quantity){
         this.bookId = id;
         this.name = name;
+        this.quantity = quantity;
+        this.available = quantity;
     }
 
     public int getId(){
@@ -16,4 +20,11 @@ public class Book{
     public String getName(){
         return name;
     }
+    public int getQuantity(){
+        return quantity;
+    }
+    public int getAvailable(){
+        return available;
+    }
+
 }

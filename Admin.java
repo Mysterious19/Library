@@ -8,8 +8,9 @@ class Admin{
         this.db = db;
     }
 
-    public void addBook(int id, String name){
-        Book obj = new Book(id,name);
+    //admin methods
+    public void addBook(int id, String name, int quantity){
+        Book obj = new Book(id,name, quantity);
         db.insert(obj);
     }
 
@@ -31,18 +32,16 @@ class Admin{
     }
     
     public void returnBook(int bookId, int userId){
-        db.remove(bookId,userId);
+        db.removeReturn(bookId,userId);
     }
 
     public void search(String bookName){
 
-        ArrayList<String> bookNames = db.search(bookName);
-        for (String obj:bookNames)
-            System.out.println(obj);
+        db.searchSimilar(bookName);  
     }
 
     public void checkUnusedBooks(int days){
-        ArrayList<String> bookNames = db.search(days);
+        ArrayList<String> bookNames = db.searchUnused(days);
         for (String obj:bookNames)
             System.out.println(obj);
     }

@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+
 class Menu{
     Admin clerk;
     
@@ -7,45 +8,47 @@ class Menu{
         this.clerk = clerk;
     }
 
+    //menu option selecting functionality
     public int selectTask(){
-        System.out.println("1. Add New User"+
-                           "2. Delete a User"+
-                           "3. Add New Book"+
-                           "4. Remove Book"+
-                           "5. Issue Book"+
-                           "6. Return Book"+
-                           "7. Search a book"+
-                           "8. Unused books"+
-                           "9. Exit");
+        System.out.println("1. Add New User \n"+
+                           "2. Delete a User \n"+
+                           "3. Add New Book \n"+
+                           "4. Remove Book \n"+
+                           "5. Issue Book \n"+
+                           "6. Return Book \n"+
+                           "7. Search a book \n"+
+                           "8. Unused books \n"+
+                           "9. Exit ");
     
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
 
         switch(option){
             case 1 : {
-                System.out.println("Enter User details : " + 
+                System.out.println("Enter User details : \n" + 
                                    "User id : ");
                 int id = scanner.nextInt();
                 System.out.println("Name : ");
                 String name = scanner.next();
-                
                 clerk.addUser(id, name);
                 break;
             }
             case 2 : {
-                System.out.println("Enter User details : " + 
+                System.out.println("Enter User details : \n" + 
                 "User id : ");
                 int id = scanner.nextInt();
                 clerk.removeUser(id);
                 break;
             }
             case 3 : {
-                System.out.println("Enter Book details : " + 
+                System.out.println("Enter Book details : \n" + 
                 "Book id (Integer values): ");
                 int id = scanner.nextInt();
                 System.out.println("Name : ");
                 String name = scanner.next();
-                clerk.addBook(id,name);
+                System.out.println("Quantity : ");
+                int quantity = scanner.nextInt();
+                clerk.addBook(id,name,quantity);
                 break;
             }
             case 4 : {
@@ -67,9 +70,9 @@ class Menu{
 
             case 6 : {
                 System.out.println("Enter User id : ");
-                int bookId = scanner.nextInt();
-                System.out.println("Enter Book id : ");
                 int userId = scanner.nextInt();
+                System.out.println("Enter Book id : ");
+                int bookId = scanner.nextInt();
             
                 clerk.returnBook(bookId,userId);
                 break;
