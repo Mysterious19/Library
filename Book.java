@@ -1,11 +1,19 @@
-import com.sun.org.apache.xml.internal.security.utils.IdResolver;
+
 
 public class Book{
-    int bookId;
-    String name;
+    private int bookId;
+    private String name;
 
     Book(int id, String name){
         this.bookId = id;
         this.name = name;
+    }
+
+    public int getId(){
+        return bookId;
+    }
+
+    public String getName(){
+        return name;
     }
 }

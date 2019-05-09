@@ -61,6 +61,7 @@ class Database{
 
     }
 
+    //function overloaded - add user
     public void insert(User obj){
         try{
             stmt = conn.createStatement();
@@ -68,18 +69,66 @@ class Database{
                 "VALUES(?,?)";
             
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, obj.UserId);
-            ps.setString(2, obj.name);
+            ps.setInt(1, obj.getId());
+            ps.setString(2, obj.getName());
             ps.executeUpdate();
-            // stmt.executeUpdate(sql,(obj.UserId, obj.name));
+            
             ps.close();
         }catch(Exception e){
             System.out.println(e+"yes");
         }
     }
 
+    // function overloaded - add book
+    public void insert(Book obj){
+        try{
+            stmt = conn.createStatement();
+            sql = "INSERT INTO BOOKS (BOOKID, NAME) "+
+                "VALUES(?,?)";
+            
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, obj.getId());
+            ps.setString(2, obj.getName());
+            ps.executeUpdate();
+            
+            ps.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
 
+    //remove user
+    public void removeUser(int id){
+        try{
+            stmt = conn.createStatement();
+            sql = "DELETE FROM USERS "+
+                "WHERE USERID = ?";
+            
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            
+            ps.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
 
+    public void removeBook(int id){
+        try{
+            stmt = conn.createStatement();
+            sql = "DELETE FROM BOOKS "+
+                "WHERE BOOKID = ?";
+            
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            
+            ps.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
 
 }
 

@@ -5,21 +5,21 @@ class Admin{
         this.db = db;
     }
 
-    // public void addBook(int id, String name){
-    //     Book obj = new Book(id,name);
-    //     db.insert(obj);
-    // }
+    public void addBook(int id, String name){
+        Book obj = new Book(id,name);
+        db.insert(obj);
+    }
 
     public void addUser(int id, String name){
         User obj = new User(id,name);
         db.insert(obj);
     }
 
-    // public void removeUser(int id){
-    //     db.removeUser(id);
-    // }
+    public void removeUser(int id){
+        db.removeUser(id);
+    }
 
-    // public void removeBook(int id){
-    //     db.removeBook(id);
-    // }
+    public void removeBook(int id){
+        db.removeBook(id);
+    }
 }
