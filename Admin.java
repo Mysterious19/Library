@@ -2,48 +2,101 @@ import java.sql.*;
 import java.util.ArrayList;
 
 class Admin {
-    private Database db = null;
+    UserMap userMapper;
+    BookMap bookMapper;
 
-    Admin(Database db) {
-        this.db = db;
+    Admin() {
+        userMapper = new UserMap();
+        bookMapper = new BookMap();
     }
 
-    // admin methods
-    public void addBook(int id, String name, int quantity) {
-        Book obj = new Book(id, name, quantity);
-        db.insert(obj);
+    // ----------Admin-User related methods--------
+
+    // Adding new user
+    public void addUser(String name) {
+        User user = new User();
+        user.setName(name);
+
+        User returnUser = userMapper.create(user);
+
+        if (returnUser == null) {
+            System.out.println("User already created by this name.");
+            return;
+        }
+        System.out.println("User created. \n " + returnUser);
     }
 
-    public void addUser(int id, String name) {
-        User obj = new User(id, name);
-        db.insert(obj);
+    // find user by id
+    public void findUserById(Integer id) {
+        User user = userMapper.find(id);
+
+        if (user == null) {
+            System.out.println("No such user found.");
+            return;
+        }
+        System.out.println(user);
     }
 
-    public void removeUser(int id) {
-        db.removeUser(id);
+    // find user by name
+    public void findUserByName(String name) {
+        User user = userMapper.find(name);
+
+        if (user == null) {
+            System.out.println("No such user found.");
+        }
+        System.out.println(user);
     }
 
-    public void removeBook(int id) {
-        db.removeBook(id);
+    // remove user by id
+    public void removeUser(Integer id) {
+        Boolean flag = userMapper.delete(id);
+
+        if (flag) {
+            System.out.println("User deleted succesfully.");
+        } else {
+            System.out.println("User not deleted.");
+        }
+
     }
 
-    public void issue(int bookId, int userId) {
-        db.insert(bookId, userId);
-    }
+    // --------Admin-Book related methods---------
 
-    public void returnBook(int bookId, int userId) {
-        db.removeReturn(bookId, userId);
-    }
+    // Add new book
+    // public void addBook(String name, Integer quantity) {
+    //     Book book = new Book();
+    //     book.setName(name);
+    //     book.setQuantity(quantity);
 
-    public void search(String bookName) {
+    //     Book returnBook = bookMapper.create(book);
 
-        db.searchSimilar(bookName);
-    }
+    //     if (returnBook == null) {
+    //         System.out.println("ERROR in Admin.addBook : book not created.");
+    //         return;
+    //     }
+    //     System.out.println("Book created. \n " + returnBook);
+    // }
 
-    public void checkUnusedBooks(int days) {
-        ArrayList<String> bookNames = db.searchUnused(days);
-        for (String obj : bookNames)
-            System.out.println(obj);
-    }
+    // public void removeBook(int id) {
+    // db.removeBook(id);
+    // }
+
+    // public void issue(int bookId, int userId) {
+    // db.insert(bookId, userId);
+    // }
+
+    // public void returnBook(int bookId, int userId) {
+    // db.removeReturn(bookId, userId);
+    // }
+
+    // public void search(String bookName) {
+
+    // db.searchSimilar(bookName);
+    // }
+
+    // public void checkUnusedBooks(int days) {
+    // ArrayList<String> bookNames = db.searchUnused(days);
+    // for (String obj : bookNames)
+    // System.out.println(obj);
+    // }
 
 }

@@ -1,18 +1,12 @@
 
 public class Book {
-    private int bookId;
+    private Integer bookId;
     private String name;
-    private int available;
-    private int quantity;
+    private Integer available;
+    private Integer quantity;
 
-    Book(int id, String name, int quantity) {
-        this.bookId = id;
-        this.name = name;
-        this.quantity = quantity;
-        this.available = quantity;
-    }
-
-    public int getId() {
+    // ----------getters-----------
+    public Integer getId() {
         return bookId;
     }
 
@@ -20,12 +14,33 @@ public class Book {
         return name;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public int getAvailable() {
+    public Integer getAvailable() {
         return available;
     }
 
+    // -------setters----------
+    public void setId(Integer id) {
+        this.bookId = id;
+        ;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setAvailable(Integer available) {
+        this.available = available;
+    }
+
+    public String toString() {
+        return "Book Id : " + bookId + " Name : " + name;
+    }
 }

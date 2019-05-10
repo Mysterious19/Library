@@ -1,17 +1,26 @@
-class User {
-    private int UserId;
+
+public class User {
+    private Integer userId;
     private String name;
 
-    User(int id, String name) {
-        this.UserId = id;
-        this.name = name;
-    }
-
-    public int getId() {
-        return UserId;
+    //-------------Getters----------
+    public Integer getId() {
+        return userId;
     }
 
     public String getName() {
         return name;
+    }
+
+    //-----------Setters-------------
+    public void setId(Integer id){
+        this.userId = id;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+    
+    public String toString() {
+        return "User ID : " + this.userId + " Name: " + this.name;
     }
 }

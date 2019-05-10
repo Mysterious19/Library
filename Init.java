@@ -1,8 +1,11 @@
 //Begin
 public class Init {
     public static void main(String[] args) {
-        Database dB = new Database();
-        Admin clerk = new Admin(dB);
+
+        TableCreation obj = new TableCreation();
+        obj.createTables();
+        
+        Admin clerk = new Admin();
         Menu startUp = new Menu(clerk);
         int loop = 1;
         while (loop == 1) {
