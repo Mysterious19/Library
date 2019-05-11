@@ -1,23 +1,29 @@
+package library;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.time.LocalDate;
 
-//a singleton database access class 
-class Database {
+/*
+Description : Database class with singleton design pattern for db connection and db operations
+*/
+
+public class Database {
     public Connection conn = null;
     private PreparedStatement ps = null;
-    
+
     public static Database db = new Database();
-    
-    //----------constructor----------
+
+    // ----------constructor----------
     private Database() {
         try {
-            String url = "jdbc:sqlite:inventory.db";
-            conn = DriverManager.getConnection(url);
-            System.out.println("Connection established");
+            String url = "jdbc:sqlite:../inventory.db";
 
+            conn = DriverManager.getConnection(url);
+
+            System.out.println("Connection established");
         } catch (SQLException e) {
             System.out.println("Connection issue");
         }
@@ -27,8 +33,9 @@ class Database {
         return db;
     }
 
-    //------------------query operation-----------------
+    // ------------------query operation-----------------
     public ResultSet query(String query, Object values[]) {
+
         try {
             ps = db.conn.prepareStatement(query);
 
@@ -37,6 +44,7 @@ class Database {
             }
 
             ResultSet res = ps.executeQuery();
+
             return res;
         } catch (SQLException e) {
             return null;
@@ -52,9 +60,7 @@ class Database {
         }
 
         Integer res = ps.executeUpdate();
+
         return res;
     }
-
-    
-
 }

@@ -1,9 +1,11 @@
+package library.entities;
 
 public class Book {
     private Integer bookId;
     private String name;
     private Integer available;
     private Integer quantity;
+    private String lastIssue;
 
     // ----------getters-----------
     public Integer getId() {
@@ -20,6 +22,10 @@ public class Book {
 
     public Integer getAvailable() {
         return available;
+    }
+
+    public String getLastIssue() {
+        return lastIssue;
     }
 
     // -------setters----------
@@ -40,7 +46,10 @@ public class Book {
         this.available = available;
     }
 
+    public void setLastIssue(String lastIssue) {
+        this.lastIssue = lastIssue;
+    }
     public String toString() {
-        return "Book Id : " + bookId + " Name : " + name;
+        return "Book Id : " + bookId + " Name : " + name + " " + lastIssue;
     }
 }

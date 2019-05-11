@@ -1,13 +1,17 @@
+package library.mappers;
+
+import library.entities.*;
+import library.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserMap {
-    private final String SQL_FIND_ID = "SELECT userID, name FROM users WHERE userID = ?";
-    private final String SQL_FIND_name = "SELECT userID, name FROM users WHERE name = ?";
-    private final String SQL_LIST_BY_ID = "SELECT userID, name FROM users ORDER BY userID";
-    private final String SQL_INSERT = "INSERT INTO users (name) VALUES (?)";
-    private final String SQL_UPDATE = "UPDATE users SET name = ? WHERE userID = ?";
-    private final String SQL_DELETE = "DELETE FROM users WHERE userID = ?";
+public class UserMap{
+    private final String SQL_FIND_ID = "SELECT userId, name, groupUser FROM users WHERE userId = ?";
+    private final String SQL_FIND_name = "SELECT userId, name, groupUser FROM users WHERE name = ?";
+    private final String SQL_LIST_BY_ID = "SELECT userId, name, groupUser FROM users ORDER BY userId";
+    private final String SQL_INSERT = "INSERT INTO users (name, groupUser) VALUES (?,?)";
+    private final String SQL_UPDATE = "UPDATE users SET name = ? WHERE userId = ?";
+    private final String SQL_DELETE = "DELETE FROM users WHERE userId = ?";
 
     // --------find user by id--------------
     public User find(Integer id) {
@@ -42,15 +46,15 @@ public class UserMap {
         ResultSet res = db.query(SQL_FIND_name, values);
 
         try {
-            if (res != null) {
-                while (res.next()) {
-                    user = map(res);
-                }
-
-                return user;
-            } else {
+            if (!res.next()) {
                 return null;
             }
+            do {
+                user = map(res);
+            } while (res.next());
+
+            return user;
+
         } catch (SQLException e) {
             return null;
         }
@@ -58,42 +62,20 @@ public class UserMap {
     }
 
     // ------create new user and return user id------------
-    public User create(User user) {
-        Object values[] = { user.getName() };
-        System.out.println(Database.getDbConn());
+    public Integer create(User user) {
+        Object values[] = { user.getName(), user.getGroup() };
         Database db = Database.getDbConn();
-        
-        User returnUser = null;
 
         try {
-            ResultSet existingUsers = db.query(SQL_FIND_name, values);
-            // System.out.print(existingUsers);
-            if (existingUsers.next()) {
-                return null;
-            }
-
             Integer res = db.update(SQL_INSERT, values);
-            System.out.println(res);
+
             if (res == 0) {
                 System.out.println("ERROR in UserMap.create : res = 0");
                 return null;
             }
-
-            ResultSet resultSet = db.query(SQL_FIND_name, values);
-
-            if (resultSet != null) {
-                while (resultSet.next()) {
-                    returnUser = map(resultSet);
-                }
-
-                return returnUser;
-            } else {
-                System.out.println("ERROR in UserMap.create : resultSet = null");
-                return null;
-            }
+            return res;
         } catch (Exception e) {
-            System.out.println(e);
-            // System.out.println("ERROR in UserMap.create : Unknown.");
+            System.out.println("ERROR in UserMap.create : Unknown.");
             return null;
         }
     }
@@ -122,12 +104,12 @@ public class UserMap {
         User user = new User();
 
         try {
-            user.setId(res.getInt("userID"));
+            user.setId(res.getInt("userId"));
             user.setName(res.getString("name"));
+            user.setGroup(res.getInt("groupUser"));
         } catch (SQLException e) {
             return null;
         }
-
         return user;
     }
 }

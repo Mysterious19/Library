@@ -1,4 +1,11 @@
+package library;
+
 import java.util.Scanner;
+
+/*
+Description : Menu class lists all the operations of the library and takes input for the required
+operation 
+*/
 
 class Menu {
     Admin clerk;
@@ -9,21 +16,30 @@ class Menu {
 
     // -----Select task or operation to be performed--------
     public int selectTask() {
-        System.out.println("1. Add New User \n" + "2. Find User By ID \n" + "3. Find User by Name \n"
-                + "4. Delete User by ID \n5. Add New Book \n6. Search Book by Name(suggestions) \n7. Issue Book"
-                + "8. Return Book \n10. Exit");
+        System.out.println("1. Add New User \n " + 
+                            "2. Find User By ID \n " + 
+                            "3. Find User by Name \n "+ 
+                            "4. Delete User by ID \n " +
+                            "5. Add New Book \n " +
+                            "6. Search Book by Name(suggestions) \n " +
+                            "7. Issue Book \n" +
+                            "8. Return Book \n" + 
+                            "10. Exit");
 
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
 
         switch (option) {
-
         //Add new user
         case 1: {
             System.out.println("Enter User details : ");
             System.out.println("User Name : ");
             String name = scanner.next();
-            clerk.addUser(name);
+            System.out.println("Enter Group id : (1-Student, 2-Staff, 3- Faculty");
+            Integer group = scanner.nextInt();
+            
+            clerk.addUser(name,group);
+            
             break;
         }
 
@@ -31,7 +47,9 @@ class Menu {
         case 2: {
             System.out.println("Enter User ID : ");
             Integer id = scanner.nextInt();
+            
             clerk.findUserById(id);
+            
             break;
         }
 
@@ -39,7 +57,9 @@ class Menu {
         case 3: {
             System.out.println("Enter User Name : ");
             String name = scanner.next();
+            
             clerk.findUserByName(name);
+            
             break;
         }
 
@@ -47,7 +67,9 @@ class Menu {
         case 4: {
             System.out.println("Enter User ID : ");
             Integer id = scanner.nextInt();
+            
             clerk.removeUser(id);
+            
             break;
         }
 
@@ -58,7 +80,9 @@ class Menu {
             String name = scanner.next();
             System.out.println("Quantity : ");
             Integer quantity = scanner.nextInt();
-            // clerk.
+            
+            clerk.addBook(name, quantity);
+            
             break;
         }
 
@@ -66,7 +90,9 @@ class Menu {
         case 6: {
             System.out.println("Enter name of the book (or prefix of a book name)");
             String name = scanner.next();
-            // clerk.search(name);
+            
+            clerk.search(name);
+            
             break;
         }
 
@@ -77,7 +103,8 @@ class Menu {
             System.out.println("Enter Book ID : ");
             int bookId = scanner.nextInt();
 
-            // clerk.issue(bookId, userId);
+            clerk.issueBook(userId, bookId);
+            
             break;
         }
 
