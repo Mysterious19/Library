@@ -3,8 +3,8 @@
 ## How to run the project : 
 
 ```
-javac Init.java
-java Init -classpath ".:sqlite-jdbc-3.27.2.1.jar"
+javac -d ./classes entities/*.java mappers/*.java *.java
+java -classpath ":sqlite-jdbc-3.27.2.1.jar:./classes" library/Init
 ```
 ### Features Implemented
 
