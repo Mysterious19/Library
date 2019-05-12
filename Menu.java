@@ -120,7 +120,7 @@ public class Menu {
             System.out.println("Enter Book ID : ");
             int bookId = scanner.nextInt();
 
-            // clerk.returnBook(bookId, userId);
+            clerk.returnBook(bookId, userId);
             break;
         }
 

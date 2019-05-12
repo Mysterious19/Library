@@ -11,8 +11,8 @@ in Issue class instance.
 
 public class IssueMap {
     private final String SQL_INSERT = "INSERT INTO issue (userId, bookId, issueDate, dueDate) VALUES (?,?,?,?)";
-    private final String SQL_DELETE = "DELETE issue WHERE userId = ? and bookId = ?";
-    private final String SQL_SEARCH = "SELECT * FROM issue WHERE userID = ? and bookId = ?";
+    private final String SQL_DELETE = "DELETE FROM issue WHERE userId = ? and bookId = ?";
+    private final String SQL_SEARCH = "SELECT * FROM issue WHERE userId = ? and bookId = ?";
     private final String SQL_COUNT = "SELECT COUNT(*) AS count FROM issue WHERE userId = ?";
     
     //find user and book in the issue table
@@ -69,6 +69,26 @@ public class IssueMap {
             return count;
         } catch (Exception e) {
             System.out.println("ERROR in IssueMap.countBooksIssuedByUser");
+            return null;
+        }
+    }
+
+    //delete record
+    public Integer delete(Issue issue) {
+        Database db = Database.getDbConn();
+        Object values[] = { issue.getUserId(), issue.getBookId()};
+
+        try {
+            Integer res = db.update(SQL_DELETE, values);
+
+            if ( res == 0) {
+                System.out.println("ERROR in IssueMap.delete : res = 0");
+                return null;
+            }
+
+            return res;
+        } catch (Exception e) {
+            System.out.println("ERROR in IssueMap.delete");
             return null;
         }
     }

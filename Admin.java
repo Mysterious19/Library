@@ -4,7 +4,7 @@ import library.mappers.*;
 import library.entities.*;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -200,8 +200,8 @@ class Admin {
         } catch (Exception e) {
             return;
         }
-        
-        if (count >  group.getMaxBooks()) {
+        // System.out.println(count);
+        if (count >=  group.getMaxBooks()) {
             System.out.println("Reached max books limit.");
             return;
         }
@@ -256,5 +256,43 @@ class Admin {
         Issue newIssue = issueMapper.find(issue);
 
         System.out.println("Book issue successful." + newIssue);
+    }
+
+    //return book
+    public void returnBook(Integer userId, Integer bookId) {
+        Issue issue = new Issue();
+        issue.setUserId(userId);
+        issue.setBookId(bookId);
+
+        Issue returnIssue = issueMapper.find(issue);
+
+        if ( returnIssue == null ) {
+            System.out.println("No such entry in records.");
+            return;
+        }
+
+        LocalDate todayDate = LocalDate.now();
+        LocalDate returnDate = LocalDate.parse(returnIssue.getDueDate());
+
+        if (todayDate.isAfter(returnDate)) {
+            System.out.println("You have dues : " + Period.between(returnDate,todayDate));
+        } else {
+            System.out.println("No active dues.");
+        }
+
+        Integer res = issueMapper.delete(returnIssue);
+
+        if ( res == null) {
+            System.out.println("Entry not deleted.");
+            return;
+        }
+
+        Book book = bookMapper.findById(bookId);
+
+        book.setAvailable(book.getAvailable()+1);
+
+        Integer result = bookMapper.update(book);
+        
+        System.out.println("Book returned succesfully.");
     }
 }
