@@ -16,7 +16,8 @@ public class BookMap{
     private final String SQL_INSERT = "INSERT INTO books(name,lastIssue, quantity, available) VALUES (?, ?, ?, ?)";
     private final String SQL_DELETE = "DELETE FROM books WHERE bookId = ?";
     private final String SQL_SEARCH = "SELECT bookId, name, lastIssue, quantity, available FROM books WHERE name LIKE ?";
-    private final String SQL_UPDATE_DATE = "UPDATE books SET lastIssue = ? WHERE bookId = ?";
+    private final String SQL_SEARCH_ID = "SELECT bookId, name, lastIssue, quantity, available FROM books WHERE bookId = ?";
+    private final String SQL_UPDATE = "UPDATE books SET name = ?, lastIssue = ?, quantity = ?,available = ?  WHERE bookId = ?";
 
     // insert book
     public Integer create(Book book) {
@@ -59,13 +60,33 @@ public class BookMap{
         }
     }
 
-    //Update lastIssue date method
-    public Integer update(String date, Integer bookId) {
+    //search book by Book ID
+    public Book findById(Integer id) {
         Database db = Database.getDbConn();
-        Object values[] = { date, bookId };
+        Object values[] = {id};
+        Book book = null;
 
         try {
-            Integer res = db.update(SQL_UPDATE_DATE, values);
+            ResultSet res = db.query(SQL_SEARCH_ID, values);
+
+            while(res.next()) {
+                book = map(res);
+            }
+
+            return book;
+        } catch (Exception e) {
+            System.out.println("ERROR in BookMap.finById");
+            return null;
+        }
+    }
+
+    //Update book record
+    public Integer update(Book book) {
+        Database db = Database.getDbConn();
+        Object values[] = { book.getName(), book.getLastIssue(), book.getQuantity(), book.getAvailable(), book.getId()};
+
+        try {
+            Integer res = db.update(SQL_UPDATE, values);
 
             if ( res == 0) {
                 System.out.println("ERROR in BookMap.update : res =0");
@@ -78,6 +99,24 @@ public class BookMap{
         }
     }
 
+    //delete book by book id
+    public Integer delete(Integer id) {
+        Database db = Database.getDbConn();
+        Object values[] = {id};
+
+        try {
+            Integer res = db.update(SQL_DELETE, values);
+
+            if ( res == 0) {
+                System.out.println("ERROR in BookMap.delete : res = 0");
+                return null ;
+            }
+            return res;
+        } catch (Exception e) {
+            System.out.println("ERROR in BookMap.delete");
+            return null;
+        }
+    }
 
     // ---------------Helpers--------------
     // Map the row of the given ResultSet to a Book

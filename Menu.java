@@ -18,8 +18,8 @@ public class Menu {
     public int selectTask() {
         System.out.println("\n             MENU             ");
         System.out.println("1. Add New User \n" + "2. Find User By ID \n" + "3. Find User by Name \n"
-                + "4. Delete User by ID \n\n" + "5. Add New Book \n" + "6. Search Book by Name(suggestions) \n\n"
-                + "7. Issue Book \n" + "8. Return Book \n" + "10. Exit");
+                + "4. Delete User by ID \n\n" + "5. Add New Book \n" + "6. Search Book by Name(suggestions) \n"
+                + "7. Delete Book by ID \n\n" + "8. Issue Book \n" + "9. Return Book \n" + "10. Exit");
 
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
@@ -91,8 +91,18 @@ public class Menu {
             break;
         }
 
-        // Issue book from library
+        // Delete book by id
         case 7: {
+            System.out.println("\nEnter Book ID of the book to be deleted.");
+            Integer id = scanner.nextInt();
+
+            clerk.removeBook(id);
+
+            break;
+        }
+
+        // Issue book from library
+        case 8: {
             System.out.println("\nEnter User ID : ");
             int userId = scanner.nextInt();
             System.out.println("Enter Book ID : ");
@@ -104,7 +114,7 @@ public class Menu {
         }
 
         // return book to library
-        case 8: {
+        case 9: {
             System.out.println("\nEnter User ID : ");
             int userId = scanner.nextInt();
             System.out.println("Enter Book ID : ");

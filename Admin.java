@@ -148,10 +148,34 @@ class Admin {
         }
     }
 
+    //delete a book
+    public void removeBook(Integer id) {
+        Book existingBook = bookMapper.findById( id );
+
+        if (existingBook == null) {
+            System.out.println("No such book found.");
+            return;
+        }
+
+        if (existingBook.getAvailable() != existingBook.getQuantity()) {
+            System.out.println("Book cannot be deleted as it is been issued by user.");
+            return;
+        }
+
+        Integer res = bookMapper.delete(id);
+
+        if ( res == 0) {
+            System.out.println("Book not deleted successfully.");
+            return;
+        }
+        System.out.println("Book deleted succesfully");
+    }
+
     //--------Admin - issue/return book related operation methods-------
 
     //Issue book
     public void issueBook(Integer userId, Integer bookId) {
+        //check user is valid
         User existingUser = userMapper.find(userId);
 
         if (existingUser == null) {
@@ -159,6 +183,7 @@ class Admin {
             return;
         }
 
+        //get group details for max days and max books he is allowed to issue
         Integer groupId = existingUser.getGroup();
         
         Group group;
@@ -181,6 +206,20 @@ class Admin {
             return;
         }
 
+        //check whether book is available
+        Book book = bookMapper.findById(bookId);
+
+        if (book == null) {
+            System.out.println("No such book found.");
+            return;
+        }
+
+        if (book.getAvailable() <= 0) {
+            System.out.println("Book not available currently.");
+            System.out.println("It will be available by : " + book.getLastIssue());
+            return;
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate issueDate = LocalDate.now();
         LocalDate dueDate = issueDate.plusDays(group.getMaxTime());
@@ -193,6 +232,7 @@ class Admin {
         issue.setissueDate(issueDateString);
         issue.setDueDate(dueDateString);
 
+        //check whether is already has issued the same book
         Issue existingIssue = issueMapper.find(issue);
 
         if (existingIssue != null ) {
@@ -207,9 +247,14 @@ class Admin {
             return;
         }
 
+        //update availability count and last issue
+        book.setAvailable(book.getAvailable()-1);
+        book.setLastIssue(dueDateString);
+        
+        Integer result = bookMapper.update(book);
+
         Issue newIssue = issueMapper.find(issue);
 
-        Integer result = bookMapper.update(dueDateString, bookId);
         System.out.println("Book issue successful." + newIssue);
     }
 }
