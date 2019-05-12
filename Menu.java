@@ -19,7 +19,7 @@ public class Menu {
         System.out.println("\n             MENU             ");
         System.out.println("1. Add New User \n" + "2. Find User By ID \n" + "3. Find User by Name \n"
                 + "4. Delete User by ID \n\n" + "5. Add New Book \n" + "6. Search Book by Name(suggestions) \n"
-                + "7. Delete Book by ID \n\n" + "8. Issue Book \n" + "9. Return Book \n" + "10. Exit");
+                + "7. Delete Book by ID \n\n" + "8. Issue Book \n" + "9. Return Book \n" + "10. List of books issued the user\n" + "11. Exit");
 
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
@@ -124,13 +124,13 @@ public class Menu {
             break;
         }
 
-        // case 8: {
-        // System.out.println("Specify days of unuse :");
-        // int days = scanner.nextInt();
-        // clerk.checkUnusedBooks(days);
-        // break;
-        // }
         case 10: {
+        System.out.println("Enter User ID :");
+        Integer id = scanner.nextInt();
+        clerk.listBooksIssue(id);
+        break;
+        }
+        case 11: {
             return 0;
         }
         default:

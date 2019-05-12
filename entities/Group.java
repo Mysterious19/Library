@@ -2,6 +2,9 @@ package library.entities;
 
 /*
 Description : Group class to create instance for the corresponding record in Group table 
+Student : 10 days and max 3 books at a time
+Staff : 20 days and max 5 books at a time
+Faculty : 30 days and max 10 books at a time
 */
 
 public class Group {

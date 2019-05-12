@@ -173,7 +173,7 @@ class Admin {
 
     //--------Admin - issue/return book related operation methods-------
 
-    //Issue book
+    //-------------Issue book
     public void issueBook(Integer userId, Integer bookId) {
         //check user is valid
         User existingUser = userMapper.find(userId);
@@ -258,7 +258,7 @@ class Admin {
         System.out.println("Book issue successful." + newIssue);
     }
 
-    //return book
+    //------------return book
     public void returnBook(Integer userId, Integer bookId) {
         Issue issue = new Issue();
         issue.setUserId(userId);
@@ -294,5 +294,20 @@ class Admin {
         Integer result = bookMapper.update(book);
         
         System.out.println("Book returned succesfully.");
+    }
+
+    // ---list of books issued by user
+    public void listBooksIssue(Integer id) {
+        List<Issue> books = issueMapper.listBooksByUser(id);
+
+        if (books.isEmpty()) {
+            System.out.println("No books issued by the user.");
+            return;
+        }
+
+        for(Issue issue : books) {
+            System.out.println(issue);    
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 package library.mappers;
 
 import java.sql.*;
+import java.util.*;
+
 import library.entities.*;
 import library.*;
 
@@ -14,6 +16,7 @@ public class IssueMap {
     private final String SQL_DELETE = "DELETE FROM issue WHERE userId = ? and bookId = ?";
     private final String SQL_SEARCH = "SELECT * FROM issue WHERE userId = ? and bookId = ?";
     private final String SQL_COUNT = "SELECT COUNT(*) AS count FROM issue WHERE userId = ?";
+    private final String SQL_BOOK = "SELECT * FROM issue WHERE userId = ?";
     
     //find user and book in the issue table
     public Issue find(Issue issue) {
@@ -89,6 +92,26 @@ public class IssueMap {
             return res;
         } catch (Exception e) {
             System.out.println("ERROR in IssueMap.delete");
+            return null;
+        }
+    }
+
+    //books List
+    public List<Issue> listBooksByUser(Integer userId) {
+        Database db = Database.getDbConn();
+        Object values[] = {userId};
+        List<Issue> list = new ArrayList<>();
+
+        try {
+            ResultSet res = db.query(SQL_BOOK, values);
+
+            while(res.next()) {
+                list.add(map(res));
+            }
+
+            return list;
+        } catch (Exception e) {
+            System.out.println("ERROR in IssueMap.listBooksByUser");
             return null;
         }
     }
