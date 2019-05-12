@@ -7,10 +7,16 @@ mkdir classes
 javac -d classes entities/*.java interfaces/*.java  mappers/*.java *.java
 java -classpath ":sqlite-jdbc-3.27.2.1.jar:./classes" library/Init
 ```
-### Features Implemented
+## Features Implemented
 
-- *The basic operations of creation / deletion of users and entry / removal of books have been implemented.*
-- *Quantities of each book is maintained.*
-- *Searching a book. The system also suggests the books in the database matching that prefix, and also show if the book is available or not. If not, when will it be available.* 
-- *Query for books that has not been used from the last some time (specified in the query)*
-- *Issuance and returning of the books by the system admin. Availability of books is taken into consideration before issuing or removing any records.*
+- The database class uses singleton design pattern for database access.
+- Interfaces are used to abstract the implementation of the classes from the user.
+- Mappers are used to transfer class instance into query. It maps the Java class objects to the database table records.
+- CRUD operations are implemented with taking into consideration scenarios like
+ >admin can not delete a user or a book from records if they are have been involved in some issue business.
+- Searching a book by name suggests others books matching the prefix name, and also show if the book is available or not. If not, when will it be available. 
+- users can issue book for certain period acording to their groups ( student, staff, faculty ). Also the number of books they can issue at a time vary with thier groups.
+- the number of books a user has issued and the due dates can be checked. During returning of the book, if applicable, dues are calculated. 
+- Job executor for removing unused books over a period if time is also implemented.
+
+![Relational Schema](./images/relationalSchema.png?raw=true "Relational Schema of database")
