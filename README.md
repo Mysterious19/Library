@@ -3,6 +3,7 @@
 ## How to run the project : 
 
 ```
+cd Library
 mkdir classes
 javac -d classes entities/*.java interfaces/*.java  mappers/*.java *.java
 java -classpath ":sqlite-jdbc-3.27.2.1.jar:./classes" library/Init
