@@ -1,5 +1,9 @@
 package library.entities;
 
+/*
+Description : User class for maintaning corresponding record of users table
+*/
+
 public class User {
     private Integer userId;
     private String name;
@@ -17,6 +21,7 @@ public class User {
     public Integer getGroup(){
         return group;
     }
+
     //-----------Setters-------------
     public void setId(Integer id){
         this.userId = id;
@@ -30,6 +35,6 @@ public class User {
     }
     
     public String toString() {
-        return "User ID : " + this.userId + " Name: " + this.name;
+        return "User ID : " + this.userId + "\nName: " + this.name + "\nGroup ID : " + this.group;
     }
 }

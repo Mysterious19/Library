@@ -19,11 +19,11 @@ public class Database {
     // ----------constructor----------
     private Database() {
         try {
-            String url = "jdbc:sqlite:../inventory.db";
+            String url = "jdbc:sqlite:inventory.db";
 
             conn = DriverManager.getConnection(url);
 
-            System.out.println("Connection established");
+            // System.out.println("Connection established");
         } catch (SQLException e) {
             System.out.println("Connection issue");
         }

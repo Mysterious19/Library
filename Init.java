@@ -1,4 +1,3 @@
-
 package library;
 
 /*
@@ -8,6 +7,10 @@ Description : Init class is the main class from where the library inventory syst
 public class Init {
     public static void main(String[] args) {
 
+        System.out.println("------------------------------------------------------");
+        System.out.println("              Library Inventory System                ");
+        System.out.println("------------------------------------------------------");
+        
         // Table creation required only once during the set-up of database
         TableCreation obj = new TableCreation();
         obj.createTables();

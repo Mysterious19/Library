@@ -1,5 +1,9 @@
 package library.entities;
 
+/*
+Description : Issue class to create object for corresponding record of Issue table
+*/
+
 public class Issue {
     private Integer userId;
     private Integer bookId;
@@ -24,7 +28,6 @@ public class Issue {
     }
 
     // ------setters---------
-
     public void setUserId(Integer id) {
         this.userId = id;
     }
@@ -42,6 +45,6 @@ public class Issue {
     }
 
     public String toString() {
-        return "UserID : "+ userId + "bookID : " + bookId + "issue date : " + issueDate + "due date : " + dueDate;
+        return "\nUserID : "+ userId + "\nbookID : " + bookId + "\nIssue date : " + issueDate + "\nDue date : " + dueDate;
      }
 }

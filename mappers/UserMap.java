@@ -5,6 +5,11 @@ import library.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/*
+Description : Mapper class to map User class object to Database query and return data 
+in User class instance.
+*/
+
 public class UserMap{
     private final String SQL_FIND_ID = "SELECT userId, name, groupUser FROM users WHERE userId = ?";
     private final String SQL_FIND_name = "SELECT userId, name, groupUser FROM users WHERE name = ?";
@@ -23,6 +28,7 @@ public class UserMap{
 
         try {
             if (res != null) {
+                
                 while (res.next()) {
                     user = map(res);
                 }
@@ -34,7 +40,6 @@ public class UserMap{
         } catch (SQLException e) {
             return null;
         }
-
     }
 
     // ----------find user by name-----------
@@ -49,16 +54,15 @@ public class UserMap{
             if (!res.next()) {
                 return null;
             }
+            
             do {
                 user = map(res);
             } while (res.next());
 
             return user;
-
         } catch (SQLException e) {
             return null;
         }
-
     }
 
     // ------create new user and return user id------------
@@ -98,7 +102,7 @@ public class UserMap{
         }
     }
 
-    // Helpers
+    //--------------Helpers-------------
     // Map the row of the given ResultSet to an User
     private User map(ResultSet res) {
         User user = new User();

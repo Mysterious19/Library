@@ -72,8 +72,9 @@ public class IssueMap {
             return null;
         }
     }
+
     //----Helpers-------
-    //map
+    //map method to convert ResultSet to Object
     public Issue map(ResultSet res) {
         Issue issue = new Issue();
         try{
@@ -84,8 +85,6 @@ public class IssueMap {
             return issue;
         } catch(SQLException e) {
             return null;
-        }
-        
-       
+        }   
     }
 }

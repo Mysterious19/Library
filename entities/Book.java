@@ -1,5 +1,9 @@
 package library.entities;
 
+/*
+Description : Book class to create instance for corresponding record in books table
+*/
+
 public class Book {
     private Integer bookId;
     private String name;
@@ -31,7 +35,6 @@ public class Book {
     // -------setters----------
     public void setId(Integer id) {
         this.bookId = id;
-        ;
     }
 
     public void setName(String name) {
@@ -50,6 +53,6 @@ public class Book {
         this.lastIssue = lastIssue;
     }
     public String toString() {
-        return "Book Id : " + bookId + " Name : " + name + " " + lastIssue;
+        return "\nBook Id : " + bookId + "\nName : " + name + "\nLast Used :" + lastIssue + "\nAvailable : " + available;
     }
 }

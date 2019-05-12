@@ -51,7 +51,7 @@ class Admin {
 
         User newUser = userMapper.find(name);
 
-        System.out.println("User created. \n " + newUser);
+        System.out.println("\nUser successfully created. \n" + newUser);
     }
 
     // find user by id
@@ -88,7 +88,7 @@ class Admin {
         if (flag) {
             System.out.println("User deleted succesfully.");
         } else {
-            System.out.println("User not deleted.");
+            System.out.println("No such user found.");
         }
 
     }
@@ -119,7 +119,7 @@ class Admin {
 
         List<Book> returnBook = bookMapper.search(name);
         
-        System.out.println("Book created. \n " + returnBook.get(0));
+        System.out.println("Book added successfully. \n " + returnBook.get(0));
     }
 
     // Search similar name matching books
@@ -139,14 +139,13 @@ class Admin {
         for (Book book : similarBooks) {
             if ( book.getAvailable() > 0) {
                 label = "Availlable";
-                System.out.println(book + "Status : " + label);
+                System.out.println(book + "\nStatus : " + label);
             } else {
                 label = "Not Available";
                 lastIssueString = book.getLastIssue();
-                System.out.println(book + " Status : " + label + " Will be Available by : " + lastIssueString);
+                System.out.println(book + "\nStatus : " + label + "\nWill be Available by : " + lastIssueString);
             }
         }
-
     }
 
     //--------Admin - issue/return book related operation methods-------
@@ -211,6 +210,6 @@ class Admin {
         Issue newIssue = issueMapper.find(issue);
 
         Integer result = bookMapper.update(dueDateString, bookId);
-        System.out.println("Issue successful. \n " + newIssue);
+        System.out.println("Book issue successful." + newIssue);
     }
 }
