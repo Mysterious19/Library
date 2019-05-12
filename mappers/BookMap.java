@@ -18,6 +18,7 @@ public class BookMap{
     private final String SQL_SEARCH = "SELECT bookId, name, lastIssue, quantity, available FROM books WHERE name LIKE ?";
     private final String SQL_SEARCH_ID = "SELECT bookId, name, lastIssue, quantity, available FROM books WHERE bookId = ?";
     private final String SQL_UPDATE = "UPDATE books SET name = ?, lastIssue = ?, quantity = ?,available = ?  WHERE bookId = ?";
+    private final String SQL_FIND_LAST = "SELECT * FROM books WHERE lastIssue < ?";
 
     // insert book
     public Integer create(Book book) {
@@ -118,7 +119,27 @@ public class BookMap{
         }
     }
 
-    // ---------------Helpers--------------
+    // list of unused books
+    public Integer unusedBooksOperation(String date) {
+        Database db = Database.getDbConn();
+        Object values[] = {date};
+
+        try {
+            ResultSet res = db.query(SQL_FIND_LAST, values);
+            Integer result = 0;
+
+            while(res.next()) {
+                result = delete(res.getInt("bookId"));
+            }
+
+            return result;
+        } catch (Exception e) {
+            System.out.println("ERROR in BookMap.unusedBooksOperation");
+            return 0;
+        }
+    }
+
+    // ---------------Helpers--------------   
     // Map the row of the given ResultSet to a Book
     private Book map(ResultSet res) {
         Book book = new Book();

@@ -310,4 +310,20 @@ class Admin {
         }
 
     }
+
+    //generic query action executor
+    public void unusedBooks(Integer days) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate todayDate = LocalDate.now().minusDays(days);
+        String dateString = todayDate.format(formatter);
+
+        Integer res = bookMapper.unusedBooksOperation(dateString);
+
+        if ( res == 0) {
+            System.out.println("No such books found.");
+            return;
+        }
+        System.out.println("Unused books deleted.");
+
+    }
 }
