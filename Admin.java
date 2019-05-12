@@ -72,6 +72,7 @@ class Admin {
 
         if (user == null) {
             System.out.println("No such user found.");
+            return;
         }
         System.out.println(user);
     }
