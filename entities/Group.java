@@ -13,37 +13,37 @@ public class Group {
     private Integer maxTime;
     private Integer maxBooks;
 
-    //-----------getters-----------
-    public Integer getGroupId(){
+    // -----------getters-----------
+    public Integer getGroupId() {
         return groupId;
     }
 
-    public String getGroupName(){
+    public String getGroupName() {
         return groupName;
     }
 
-    public Integer getMaxTime(){
+    public Integer getMaxTime() {
         return maxTime;
     }
 
-    public Integer getMaxBooks(){
+    public Integer getMaxBooks() {
         return maxBooks;
     }
 
-    //------setters-------
-    public void setGroupId(Integer id){
-         this.groupId = id;
+    // ------setters-------
+    public void setGroupId(Integer id) {
+        this.groupId = id;
     }
 
-    public void setGroupName(String name){
-         this.groupName = name;
+    public void setGroupName(String name) {
+        this.groupName = name;
     }
 
-    public void setMaxTime(Integer time){
-         this.maxTime = time;
+    public void setMaxTime(Integer time) {
+        this.maxTime = time;
     }
 
-    public void setMaxBooks(Integer books){
-         this.maxBooks = books;
+    public void setMaxBooks(Integer books) {
+        this.maxBooks = books;
     }
 }

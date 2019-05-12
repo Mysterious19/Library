@@ -2,15 +2,15 @@ package library.mappers;
 
 import library.entities.*;
 import library.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import library.interfaces.UserInterface;
+import java.sql.*;
 
 /*
 Description : Mapper class to map User class object to Database query and return data 
 in User class instance.
 */
 
-public class UserMap{
+public class UserMap implements UserInterface{
     private final String SQL_FIND_ID = "SELECT userId, name, groupUser FROM users WHERE userId = ?";
     private final String SQL_FIND_name = "SELECT userId, name, groupUser FROM users WHERE name = ?";
     private final String SQL_LIST_BY_ID = "SELECT userId, name, groupUser FROM users ORDER BY userId";
@@ -28,7 +28,7 @@ public class UserMap{
 
         try {
             if (res != null) {
-                
+
                 while (res.next()) {
                     user = map(res);
                 }
@@ -54,7 +54,7 @@ public class UserMap{
             if (!res.next()) {
                 return null;
             }
-            
+
             do {
                 user = map(res);
             } while (res.next());
@@ -102,7 +102,7 @@ public class UserMap{
         }
     }
 
-    //--------------Helpers-------------
+    // --------------Helpers-------------
     // Map the row of the given ResultSet to an User
     private User map(ResultSet res) {
         User user = new User();

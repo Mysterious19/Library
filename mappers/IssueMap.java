@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 import library.entities.*;
+import library.interfaces.IssueInterface;
 import library.*;
 
 /*
@@ -11,26 +12,26 @@ Description : Mapper class to map Issue class object to Database query and retur
 in Issue class instance.
 */
 
-public class IssueMap {
+public class IssueMap implements IssueInterface {
     private final String SQL_INSERT = "INSERT INTO issue (userId, bookId, issueDate, dueDate) VALUES (?,?,?,?)";
     private final String SQL_DELETE = "DELETE FROM issue WHERE userId = ? and bookId = ?";
     private final String SQL_SEARCH = "SELECT * FROM issue WHERE userId = ? and bookId = ?";
     private final String SQL_COUNT = "SELECT COUNT(*) AS count FROM issue WHERE userId = ?";
     private final String SQL_BOOK = "SELECT * FROM issue WHERE userId = ?";
-    
-    //find user and book in the issue table
+
+    // find user and book in the issue table
     public Issue find(Issue issue) {
         Database db = Database.getDbConn();
-        Object values[] = {issue.getUserId(), issue.getBookId()};
+        Object values[] = { issue.getUserId(), issue.getBookId() };
         Issue newIssue = null;
 
         try {
             ResultSet res = db.query(SQL_SEARCH, values);
 
-            while(res.next()) {
+            while (res.next()) {
                 newIssue = map(res);
             }
-            
+
             return newIssue;
         } catch (Exception e) {
             System.out.println("ERROR in IssueMap.find");
@@ -41,13 +42,12 @@ public class IssueMap {
     // insert entry upon issue
     public Integer create(Issue issue) {
         Database db = Database.getDbConn();
-        Object values[] = {issue.getUserId(), issue.getBookId(), issue.getIssueDate(), issue.getDueDate() };
-
+        Object values[] = { issue.getUserId(), issue.getBookId(), issue.getIssueDate(), issue.getDueDate() };
 
         try {
             Integer res = db.update(SQL_INSERT, values);
 
-            if ( res == 0) {
+            if (res == 0) {
                 System.out.println("ERROR in IssueMap.create : res = 0");
                 return null;
             }
@@ -61,12 +61,12 @@ public class IssueMap {
     // Count the numbers of books issued by the user
     public Integer countBooksIssuedByUser(Integer userId) {
         Database db = Database.getDbConn();
-        Object values[] = {userId};
+        Object values[] = { userId };
 
         try {
             ResultSet res = db.query(SQL_COUNT, values);
             Integer count = 0;
-            while(res.next()) {
+            while (res.next()) {
                 count = res.getInt("count");
             }
             return count;
@@ -76,15 +76,15 @@ public class IssueMap {
         }
     }
 
-    //delete record
+    // delete record
     public Integer delete(Issue issue) {
         Database db = Database.getDbConn();
-        Object values[] = { issue.getUserId(), issue.getBookId()};
+        Object values[] = { issue.getUserId(), issue.getBookId() };
 
         try {
             Integer res = db.update(SQL_DELETE, values);
 
-            if ( res == 0) {
+            if (res == 0) {
                 System.out.println("ERROR in IssueMap.delete : res = 0");
                 return null;
             }
@@ -96,16 +96,16 @@ public class IssueMap {
         }
     }
 
-    //books List
+    // books List
     public List<Issue> listBooksByUser(Integer userId) {
         Database db = Database.getDbConn();
-        Object values[] = {userId};
+        Object values[] = { userId };
         List<Issue> list = new ArrayList<>();
 
         try {
             ResultSet res = db.query(SQL_BOOK, values);
 
-            while(res.next()) {
+            while (res.next()) {
                 list.add(map(res));
             }
 
@@ -116,18 +116,18 @@ public class IssueMap {
         }
     }
 
-    //----Helpers-------
-    //map method to convert ResultSet to Object
+    // ----Helpers-------
+    // map method to convert ResultSet to Object
     public Issue map(ResultSet res) {
         Issue issue = new Issue();
-        try{
+        try {
             issue.setUserId(res.getInt("userId"));
             issue.setBookId(res.getInt("bookId"));
             issue.setissueDate(res.getString("issueDate"));
             issue.setDueDate(res.getString("dueDate"));
             return issue;
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             return null;
-        }   
+        }
     }
 }

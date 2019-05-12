@@ -18,13 +18,14 @@ class Admin {
     BookMap bookMapper;
     IssueMap issueMapper;
     GroupMap groupMapper;
+    JobExecutor jobExecutor;
 
-    
     Admin() {
         userMapper = new UserMap();
         bookMapper = new BookMap();
         issueMapper = new IssueMap();
         groupMapper = new GroupMap();
+        jobExecutor = new JobExecutor();
     }
 
     // ----------Admin-User related operation methods--------
@@ -39,7 +40,7 @@ class Admin {
 
         if (existingUser != null) {
             System.out.println("User already created by this name.");
-            return ;
+            return;
         }
 
         Integer res = userMapper.create(user);
@@ -79,7 +80,7 @@ class Admin {
     public void removeUser(Integer id) {
         Integer count = issueMapper.countBooksIssuedByUser(id);
 
-        if ( count != 0) {
+        if (count != 0) {
             System.out.println("User has issued some books. Entry can not be deleted.");
             return;
         }
@@ -105,29 +106,29 @@ class Admin {
 
         List<Book> existingBook = bookMapper.search(name);
 
-        if(!existingBook.isEmpty()) {
+        if (!existingBook.isEmpty()) {
             System.out.println("Book already created by this name.");
-            return ;
+            return;
         }
 
         Integer res = bookMapper.create(book);
 
-        if(res == 0) {
+        if (res == 0) {
             System.out.println("Book not added succesfully");
             return;
         }
 
         List<Book> returnBook = bookMapper.search(name);
-        
+
         System.out.println("Book added successfully. \n " + returnBook.get(0));
     }
 
     // Search similar name matching books
     public void search(String name) {
-        name = name+"%";
-        
+        name = name + "%";
+
         List<Book> similarBooks = bookMapper.search(name);
-       
+
         if (similarBooks.isEmpty()) {
             System.out.println("No similar books found.");
             return;
@@ -135,9 +136,9 @@ class Admin {
 
         String label = "";
         String lastIssueString = "nil";
-        
+
         for (Book book : similarBooks) {
-            if ( book.getAvailable() > 0) {
+            if (book.getAvailable() > 0) {
                 label = "Availlable";
                 System.out.println(book + "\nStatus : " + label);
             } else {
@@ -148,9 +149,9 @@ class Admin {
         }
     }
 
-    //delete a book
+    // delete a book
     public void removeBook(Integer id) {
-        Book existingBook = bookMapper.findById( id );
+        Book existingBook = bookMapper.findById(id);
 
         if (existingBook == null) {
             System.out.println("No such book found.");
@@ -164,18 +165,18 @@ class Admin {
 
         Integer res = bookMapper.delete(id);
 
-        if ( res == 0) {
+        if (res == 0) {
             System.out.println("Book not deleted successfully.");
             return;
         }
         System.out.println("Book deleted succesfully");
     }
 
-    //--------Admin - issue/return book related operation methods-------
+    // --------Admin - issue/return book related operation methods-------
 
-    //-------------Issue book
+    // -------------Issue book
     public void issueBook(Integer userId, Integer bookId) {
-        //check user is valid
+        // check user is valid
         User existingUser = userMapper.find(userId);
 
         if (existingUser == null) {
@@ -183,17 +184,17 @@ class Admin {
             return;
         }
 
-        //get group details for max days and max books he is allowed to issue
+        // get group details for max days and max books he is allowed to issue
         Integer groupId = existingUser.getGroup();
-        
+
         Group group;
         Integer count;
 
         try {
             group = groupMapper.find(groupId);
-            count = issueMapper.countBooksIssuedByUser(userId);    
-            
-            if ( group == null ) {
+            count = issueMapper.countBooksIssuedByUser(userId);
+
+            if (group == null) {
                 System.out.println("No such group.");
                 return;
             }
@@ -201,12 +202,12 @@ class Admin {
             return;
         }
         // System.out.println(count);
-        if (count >=  group.getMaxBooks()) {
+        if (count >= group.getMaxBooks()) {
             System.out.println("Reached max books limit.");
             return;
         }
 
-        //check whether book is available
+        // check whether book is available
         Book book = bookMapper.findById(bookId);
 
         if (book == null) {
@@ -232,10 +233,10 @@ class Admin {
         issue.setissueDate(issueDateString);
         issue.setDueDate(dueDateString);
 
-        //check whether is already has issued the same book
+        // check whether is already has issued the same book
         Issue existingIssue = issueMapper.find(issue);
 
-        if (existingIssue != null ) {
+        if (existingIssue != null) {
             System.out.println("User can not issue same book twice.");
             return;
         }
@@ -247,10 +248,10 @@ class Admin {
             return;
         }
 
-        //update availability count and last issue
-        book.setAvailable(book.getAvailable()-1);
+        // update availability count and last issue
+        book.setAvailable(book.getAvailable() - 1);
         book.setLastIssue(dueDateString);
-        
+
         Integer result = bookMapper.update(book);
 
         Issue newIssue = issueMapper.find(issue);
@@ -258,7 +259,7 @@ class Admin {
         System.out.println("Book issue successful." + newIssue);
     }
 
-    //------------return book
+    // ------------return book
     public void returnBook(Integer userId, Integer bookId) {
         Issue issue = new Issue();
         issue.setUserId(userId);
@@ -266,7 +267,7 @@ class Admin {
 
         Issue returnIssue = issueMapper.find(issue);
 
-        if ( returnIssue == null ) {
+        if (returnIssue == null) {
             System.out.println("No such entry in records.");
             return;
         }
@@ -275,24 +276,24 @@ class Admin {
         LocalDate returnDate = LocalDate.parse(returnIssue.getDueDate());
 
         if (todayDate.isAfter(returnDate)) {
-            System.out.println("You have dues : " + Period.between(returnDate,todayDate));
+            System.out.println("You have dues : " + Period.between(returnDate, todayDate));
         } else {
             System.out.println("No active dues.");
         }
 
         Integer res = issueMapper.delete(returnIssue);
 
-        if ( res == null) {
+        if (res == null) {
             System.out.println("Entry not deleted.");
             return;
         }
 
         Book book = bookMapper.findById(bookId);
 
-        book.setAvailable(book.getAvailable()+1);
+        book.setAvailable(book.getAvailable() + 1);
 
         Integer result = bookMapper.update(book);
-        
+
         System.out.println("Book returned succesfully.");
     }
 
@@ -305,21 +306,22 @@ class Admin {
             return;
         }
 
-        for(Issue issue : books) {
-            System.out.println(issue);    
+        for (Issue issue : books) {
+            System.out.println(issue);
         }
 
     }
 
-    //generic query action executor
+    // Admin calling - generic job executor for removing unused books
     public void unusedBooks(Integer days) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate todayDate = LocalDate.now().minusDays(days);
         String dateString = todayDate.format(formatter);
+        Object values[] = { dateString };
 
-        Integer res = bookMapper.unusedBooksOperation(dateString);
+        Integer res = jobExecutor.executeJob("RemoveUnused", values);
 
-        if ( res == 0) {
+        if (res == 0) {
             System.out.println("No such books found.");
             return;
         }

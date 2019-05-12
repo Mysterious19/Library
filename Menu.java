@@ -19,8 +19,8 @@ public class Menu {
         System.out.println("\n             MENU             ");
         System.out.println("1. Add New User \n" + "2. Find User By ID \n" + "3. Find User by Name \n"
                 + "4. Delete User by ID \n\n" + "5. Add New Book \n" + "6. Search Book by Name(suggestions) \n"
-                + "7. Delete Book by ID \n\n" + "8. Issue Book \n" + "9. Return Book \n" + "10. List of books issued the user\n"
-                + "11. Remove Unused Books\n" + "12. Exit");
+                + "7. Delete Book by ID \n\n" + "8. Issue Book \n" + "9. Return Book \n"
+                + "10. List of books issued by the user\n" + "11. Remove Unused Books\n" + "12. Exit");
 
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();
@@ -122,17 +122,17 @@ public class Menu {
             int bookId = scanner.nextInt();
 
             clerk.returnBook(bookId, userId);
-            
+
             break;
         }
 
-        //list of books issued by the user
+        // list of books issued by the user
         case 10: {
             System.out.println("Enter User ID :");
             Integer id = scanner.nextInt();
-            
+
             clerk.listBooksIssue(id);
-            
+
             break;
         }
 
@@ -140,13 +140,13 @@ public class Menu {
         case 11: {
             System.out.println("Enter number of days :");
             Integer days = scanner.nextInt();
-            
+
             clerk.unusedBooks(days);
-            
+
             break;
         }
 
-        //exit
+        // exit
         case 12: {
             return 0;
         }

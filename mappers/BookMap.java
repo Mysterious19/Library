@@ -2,7 +2,7 @@ package library.mappers;
 
 import library.*;
 import library.entities.*;
-
+import library.interfaces.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -12,7 +12,7 @@ Description : Mapper class to map Book class object to Database query and return
 in Book class instance.
 */
 
-public class BookMap{
+public class BookMap implements BookInterface {
     private final String SQL_INSERT = "INSERT INTO books(name,lastIssue, quantity, available) VALUES (?, ?, ?, ?)";
     private final String SQL_DELETE = "DELETE FROM books WHERE bookId = ?";
     private final String SQL_SEARCH = "SELECT bookId, name, lastIssue, quantity, available FROM books WHERE name LIKE ?";
@@ -23,11 +23,11 @@ public class BookMap{
     // insert book
     public Integer create(Book book) {
         Database db = Database.getDbConn();
-        Object values[] = { book.getName(),book.getLastIssue(), book.getQuantity(), book.getAvailable() };
-        
+        Object values[] = { book.getName(), book.getLastIssue(), book.getQuantity(), book.getAvailable() };
+
         try {
             Integer res = db.update(SQL_INSERT, values);
-            
+
             if (res == 0) {
                 System.out.println("ERROR in BookMap.create : res = 0");
                 return null;
@@ -37,11 +37,11 @@ public class BookMap{
         } catch (Exception e) {
             System.out.println(e + "ERROR in BookMap.create");
             return null;
-        }    
+        }
     }
 
-    //-----search by prefix matching---
-    public List<Book> search(String name){
+    // -----search by prefix matching---
+    public List<Book> search(String name) {
         Database db = Database.getDbConn();
         Object values[] = { name };
 
@@ -49,7 +49,7 @@ public class BookMap{
 
         try {
             ResultSet simBooks = db.query(SQL_SEARCH, values);
-              
+
             while (simBooks.next()) {
                 similarBooks.add(map(simBooks));
             }
@@ -61,16 +61,16 @@ public class BookMap{
         }
     }
 
-    //search book by Book ID
+    // search book by Book ID
     public Book findById(Integer id) {
         Database db = Database.getDbConn();
-        Object values[] = {id};
+        Object values[] = { id };
         Book book = null;
 
         try {
             ResultSet res = db.query(SQL_SEARCH_ID, values);
 
-            while(res.next()) {
+            while (res.next()) {
                 book = map(res);
             }
 
@@ -81,15 +81,16 @@ public class BookMap{
         }
     }
 
-    //Update book record
+    // Update book record
     public Integer update(Book book) {
         Database db = Database.getDbConn();
-        Object values[] = { book.getName(), book.getLastIssue(), book.getQuantity(), book.getAvailable(), book.getId()};
+        Object values[] = { book.getName(), book.getLastIssue(), book.getQuantity(), book.getAvailable(),
+                book.getId() };
 
         try {
             Integer res = db.update(SQL_UPDATE, values);
 
-            if ( res == 0) {
+            if (res == 0) {
                 System.out.println("ERROR in BookMap.update : res =0");
                 return null;
             }
@@ -100,17 +101,17 @@ public class BookMap{
         }
     }
 
-    //delete book by book id
+    // delete book by book id
     public Integer delete(Integer id) {
         Database db = Database.getDbConn();
-        Object values[] = {id};
+        Object values[] = { id };
 
         try {
             Integer res = db.update(SQL_DELETE, values);
 
-            if ( res == 0) {
+            if (res == 0) {
                 System.out.println("ERROR in BookMap.delete : res = 0");
-                return null ;
+                return null;
             }
             return res;
         } catch (Exception e) {
@@ -120,26 +121,25 @@ public class BookMap{
     }
 
     // list of unused books
-    public Integer unusedBooksOperation(String date) {
+    public List<Book> unusedBooksOperation(Object values[]) {
         Database db = Database.getDbConn();
-        Object values[] = {date};
+        List<Book> books = new ArrayList<>();
 
         try {
             ResultSet res = db.query(SQL_FIND_LAST, values);
-            Integer result = 0;
 
-            while(res.next()) {
-                result = delete(res.getInt("bookId"));
+            while (res.next()) {
+                books.add(map(res));
             }
 
-            return result;
+            return books;
         } catch (Exception e) {
             System.out.println("ERROR in BookMap.unusedBooksOperation");
-            return 0;
+            return books;
         }
     }
 
-    // ---------------Helpers--------------   
+    // ---------------Helpers--------------
     // Map the row of the given ResultSet to a Book
     private Book map(ResultSet res) {
         Book book = new Book();
